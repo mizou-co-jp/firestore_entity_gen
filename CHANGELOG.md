@@ -1,7 +1,5 @@
 # Changelog
 
-## 0.1.0
-- Initial development release
-- Added CLI tool for generating Dart entities from Firestore REST
-- Added LICENSE (MIT)
-- Adjusted dependencies for pub publishing
+## 0.0.1-pre
+- I just made something that looked like it
+- マジでそれっぽいものを作っただけ
