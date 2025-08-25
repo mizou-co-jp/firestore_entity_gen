@@ -3,9 +3,8 @@ part 'androidapp.g.dart';
 
 /// Generated entity for collection `AndroidApp`.
 ///
-/// The `id` field holds the Firestore document ID. When generating from Firestore REST responses, the CLI will extract the document ID from the document `name` and include it as the `id` field in the parsed map so that the generated `_$AndroidAppFromFirestore` can read it.
+/// The `id` field holds the Firestore document ID. When generating from Firestore REST responses, the CLI will extract the document ID from the document `name` and include it as the `id` field in the parsed map so that the generated _$AndroidAppFromFirestore can read it.
 /// If you construct maps manually, include an `id` key with the document id.
-@FirestoreEntity(collection: 'AndroidApp')
 class AndroidApp {
   final int appState;
   final String appTitle;

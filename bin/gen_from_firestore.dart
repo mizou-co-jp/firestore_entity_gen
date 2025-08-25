@@ -104,9 +104,8 @@ String _genDartFiles(String collection, Map<String, String> finalTypes, Map<Stri
   libBuffer.writeln('/// Generated entity for collection `$collection`.');
   libBuffer.writeln('///');
   libBuffer.writeln(
-      '/// The `id` field holds the Firestore document ID. When generating from Firestore REST responses, the CLI will extract the document ID from the document `name` and include it as the `id` field in the parsed map so that the generated `_\$${className}FromFirestore` can read it.');
+      '/// The `id` field holds the Firestore document ID. When generating from Firestore REST responses, the CLI will extract the document ID from the document `name` and include it as the `id` field in the parsed map so that the generated ' + '_\$' + className + 'FromFirestore' + ' can read it.');
   libBuffer.writeln('/// If you construct maps manually, include an `id` key with the document id.');
-  libBuffer.writeln("@FirestoreEntity(collection: '$collection')");
   libBuffer.writeln('class $className {');
   // ensure 'id' is treated like other fields and included in sorting
   finalTypes.putIfAbsent('id', () => 'String');
