@@ -284,8 +284,12 @@ Future<void> main(List<String> args) async {
     }
   });
 
-  // enum decision
+  // enum decision: only emit enums when flag set and distinct values per-field <= threshold
   final shouldEmitEnum = emitEnum;
+  if (emitEnum) {
+    // prune distinctValues to only those within threshold
+    distinctValues.removeWhere((k, v) => v.length > enumThreshold);
+  }
 
   final encoded = _genDartFiles(collection, finalTypes, distinctValues, shouldEmitEnum);
   final decoded = json.decode(encoded) as Map<String, dynamic>;
