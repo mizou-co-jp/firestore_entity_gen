@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.2+1-pre
+- image paths fixed in README.md
+
 ## 0.0.2-pre
 - image assets and README updates
 

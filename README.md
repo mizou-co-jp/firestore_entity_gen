@@ -1,7 +1,7 @@
 # firestore_entity_gen
-![](image/firestore.png)
+![](https://raw.githubusercontent.com/mizou-co-jp/firestore_entity_gen/refs/heads/main/image/firestore.png)
 ----------- 👇　Gen -----------
-![](image/entity.png)
+![](https://github.com/mizou-co-jp/firestore_entity_gen/blob/main/image/entity.png?raw=true)
 
 
 Key points (must read)
