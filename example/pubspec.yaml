@@ -7,6 +7,10 @@ dependencies:
   firestore_entity_gen:
     path: ..
 
+# If you were a consumer (installing from pub.dev), your pubspec would include:
+# dependencies:
+#   firestore_entity_gen: ^0.0.1
+
 dev_dependencies:
   build_runner: ^2.4.0
   source_gen: ^1.2.2
