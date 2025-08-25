@@ -98,7 +98,6 @@ String _genDartFiles(String collection, Map<String, String> finalTypes, Map<Stri
   final partFile = '${collection.toLowerCase()}.g.dart';
 
   final libBuffer = StringBuffer();
-  libBuffer.writeln("import 'package:firestore_entity_gen/firestore_entity_annotations.dart';");
   libBuffer.writeln("part '$partFile';\n");
   // Doc comment: explain purpose of `id` field
   libBuffer.writeln('/// Generated entity for collection `$collection`.');
