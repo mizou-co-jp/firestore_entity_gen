@@ -51,14 +51,6 @@ fvm dart pub add firestore_entity_gen
 fvm dart run firestore_entity_gen:gen_from_firestore -p [YOUR_PROJECT_ID] -c [Collection name] -o [出力バス 例：example/lib/generated]
 ```
 
-注: パッケージ側の `pubspec.yaml` に以下のような `executables` セクションが必要です:
-
-```yaml
-executables:
-	gen_from_firestore: gen_from_firestore
-```
-
-
 備考（開発者向け）
 - 開発者がリポジトリをチェックアウトして直接実行する場合は、ルートから bin を指定して呼べます:
 
