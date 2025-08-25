@@ -50,3 +50,16 @@ fvm dart run bin/gen_from_firestore.dart -p [YOUR_PROJECT_ID] -c [コレクシ�
 ```
 
 注: `gcloud auth application-default login` が失敗する場合は、ネットワークや gcloud のバージョン、既存の認証状態（`gcloud auth list`）を確認してください。
+
+---
+
+## 出力と運用方針
+
+- 生成されるファイルは `<collection>.dart` と `<collection>.g.dart` の2ファイルです。
+- 生成物は再生成可能であるため、サンプルは `example/lib/generated/` に置く運用を推奨します。公開ライブラリの `lib/` に生成物を恒久的に置く必要は通常ありません。
+
+### `id` フィールドについて
+
+- 生成されるクラスには `id` フィールドが含まれます。これは Firestore のドキュメントID（REST レスポンスの `name` フィールドから抽出）を表します。
+- CLI は Firestore REST の各ドキュメントから `name` をパースして `id` を抽出し、生成時にパース済みマップへ `id` キーを注入します。したがって、生成された `_$ClassFromFirestore` やユーティリティは `map['id']` を参照できます。
+- 手動でマップを作成して `fromFirestore` 相当の関数に渡す場合は、必ず `id` キーを含めてください（例: `{'id': '<docId>', 'name': '...'}`）。

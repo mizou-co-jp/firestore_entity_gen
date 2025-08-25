@@ -49,6 +49,15 @@ String _simpleType(dynamic v) {
 
 Map<String, dynamic> _parseFirestoreDocument(Map<String, dynamic> doc) {
   final res = <String, dynamic>{};
+  // extract document id from the document name, if present
+  if (doc.containsKey('name') && doc['name'] is String) {
+    final name = doc['name'] as String;
+    // name format: projects/{proj}/databases/{db}/documents/{collection}/{docId}[/...]
+    final parts = name.split('/');
+    if (parts.isNotEmpty) {
+      res['id'] = parts.last;
+    }
+  }
   final fieldsObj = doc['fields'] as Map<String, dynamic>?;
   if (fieldsObj == null) return res;
   fieldsObj.forEach((k, v) {
@@ -91,66 +100,74 @@ String _genDartFiles(String collection, Map<String, String> finalTypes, Map<Stri
   final libBuffer = StringBuffer();
   libBuffer.writeln("import 'package:firestore_entity_gen/firestore_entity_annotations.dart';");
   libBuffer.writeln("part '$partFile';\n");
+  // Doc comment: explain purpose of `id` field
+  libBuffer.writeln('/// Generated entity for collection `$collection`.');
+  libBuffer.writeln('///');
+  libBuffer.writeln(
+      '/// The `id` field holds the Firestore document ID. When generating from Firestore REST responses, the CLI will extract the document ID from the document `name` and include it as the `id` field in the parsed map so that the generated `_\$${className}FromFirestore` can read it.');
+  libBuffer.writeln('/// If you construct maps manually, include an `id` key with the document id.');
   libBuffer.writeln("@FirestoreEntity(collection: '$collection')");
   libBuffer.writeln('class $className {');
-  libBuffer.writeln('  final String id;');
-  finalTypes.forEach((k, t) {
-    if (k == 'id') return;
+  // ensure 'id' is treated like other fields and included in sorting
+  finalTypes.putIfAbsent('id', () => 'String');
+  final fieldKeys = finalTypes.keys.toList()..sort();
+  for (final k in fieldKeys) {
+    final t = finalTypes[k]!;
     libBuffer.writeln('  final $t $k;');
-  });
+  }
   libBuffer.writeln('');
-  final ctorParams = finalTypes.keys.where((k) => k != 'id').map((k) => 'required this.$k').join(', ');
-  libBuffer.writeln('  $className({required this.id${ctorParams.isNotEmpty ? ', ' + ctorParams : ''} });');
+  final ctorParams = fieldKeys.map((k) => 'required this.$k').join(', ');
+  libBuffer.writeln('  $className({${ctorParams}});');
   libBuffer.writeln('}');
 
   final genBuffer = StringBuffer();
   genBuffer.writeln("part of '${collection.toLowerCase()}.dart';\n");
 
-  // enum declarations
+  // enum declarations (stable order)
   if (emitEnum) {
     final identRe = RegExp(r'^[A-Za-z_][A-Za-z0-9_]*$');
-    distinctValues.forEach((k, values) {
+    final keysForEnum = distinctValues.keys.toList()..sort();
+    for (final k in keysForEnum) {
+      final values = distinctValues[k] ?? <String>{};
       final t = finalTypes[k] ?? '';
       final isStringField = t.startsWith('String');
-      if (!isStringField) return;
+      if (!isStringField) continue;
       if (values.isNotEmpty && values.length <= 20) {
-        // only if all values are safe identifiers (no leading digits, no spaces)
-        final allSafe = values.every((v) => v is String && identRe.hasMatch(v));
-        if (!allSafe) return;
+        final sortedValues = values.whereType<String>().toList()..sort();
+        final allSafe = sortedValues.every((v) => identRe.hasMatch(v));
+        if (!allSafe) continue;
         final enumName = _pascal(k);
         genBuffer.writeln('enum $enumName {');
-        for (final v in values) {
+        for (final v in sortedValues) {
           final constName = v.toString();
           genBuffer.writeln('  $constName,');
         }
         genBuffer.writeln('}\n');
       }
-    });
+    }
   }
 
-  // toFirestore
+  // toFirestore (stable field order)
   genBuffer.writeln('extension ${className}FirestoreExtension on $className {');
   genBuffer.writeln('  Map<String, dynamic> toFirestore() => {');
-  finalTypes.forEach((k, t) {
+  for (final k in fieldKeys) {
+    final t = finalTypes[k]!;
     if (t == 'DateTime' || t == 'DateTime?') {
       genBuffer.writeln("    '$k': $k${t.endsWith('?') ? ' == null ? null : ' : '.'}toIso8601String(),");
     } else if (t.startsWith('List<DateTime')) {
       genBuffer.writeln("    '$k': $k.map((e) => e.toIso8601String()).toList(),");
-    } else if (t.startsWith('List<') || t.startsWith('Map<') || t == 'String' || t == 'int' || t == 'double' || t == 'bool' || t.endsWith('?')) {
-      genBuffer.writeln("    '$k': $k,");
     } else {
       genBuffer.writeln("    '$k': $k,");
     }
-  });
+  }
   genBuffer.writeln('  };');
   genBuffer.writeln('}\n');
 
-  // from map
+  // from map (stable order)
   genBuffer.writeln('$className _\$${className}FromFirestore(Map<String, dynamic> map) {');
   genBuffer.writeln('  return $className(');
-  genBuffer.writeln("    id: map['id'] as String,");
-  finalTypes.forEach((k, t) {
-    if (k == 'id') return;
+  for (final k in fieldKeys) {
+    final t = finalTypes[k]!;
     String expr;
     if (t == 'String') expr = "map['$k'] as String";
     else if (t == 'int') expr = "map['$k'] as int";
@@ -162,7 +179,7 @@ String _genDartFiles(String collection, Map<String, String> finalTypes, Map<Stri
     else if (t.startsWith('Map<')) expr = "(map['$k'] as Map<String, dynamic>)";
     else expr = "map['$k']";
     genBuffer.writeln("    $k: $expr,");
-  });
+  }
   genBuffer.writeln('  );');
   genBuffer.writeln('}');
 
