@@ -1,0 +1,20 @@
+[
+  {
+    "name": "projects/p/databases/(default)/documents/users/1",
+    "fields": {
+      "id": {"stringValue": "1"},
+      "name": {"stringValue": "Alice"},
+      "age": {"integerValue": "30"},
+      "createdAt": {"timestampValue": "2020-01-01T00:00:00Z"}
+    }
+  },
+  {
+    "name": "projects/p/databases/(default)/documents/users/2",
+    "fields": {
+      "id": {"stringValue": "2"},
+      "name": {"stringValue": "Bob"},
+      "age": {"integerValue": "25"},
+      "createdAt": {"timestampValue": "2021-01-01T00:00:00Z"}
+    }
+  }
+]

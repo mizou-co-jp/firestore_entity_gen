@@ -1,0 +1,8 @@
+builders:
+  firestore_entity_gen:
+    import: "package:firestore_entity_gen/builder.dart"
+    builder_factories: ["firestoreEntityBuilder"]
+    build_extensions: {".dart": [".g.dart"]}
+    auto_apply: dependents
+    build_to: source
+    runs_before: ["source_gen|combining_builder"]
