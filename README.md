@@ -1,4 +1,7 @@
 # firestore_entity_gen
+||||
+|---|---|---|
+|<img width=300px src="image/firestore.png">|👉|<img width=300px src="image/entity.png">|
 Key points (must read)
 - Users normally do not write model classes by hand. The intended workflow is to use bin/gen_from_firestore.dart to infer types from Firestore (REST) and auto-generate them.
 - The library-side @FirestoreEntity (source_gen) support is an auxiliary feature. The recommended workflow is generation via the CLI.
