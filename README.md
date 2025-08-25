@@ -148,4 +148,4 @@ fvm dart run bin/gen_from_firestore.dart -p YOUR_PROJECT_ID -c Collection -o exa
 
 ---
 
-<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="sogablog" data-color="#FFDD00" data-emoji="" data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
+[<img src="https://raw.githubusercontent.com/mizou-co-jp/firestore_entity_gen/refs/heads/main/image/snapshot-bmc-button.png" alt="Buy me a coffee">](https://buymeacoffee.com/sogablog)
