@@ -145,3 +145,7 @@ fvm dart run bin/gen_from_firestore.dart -p YOUR_PROJECT_ID -c Collection -o exa
 - 生成されるクラスには `id` フィールドが含まれます。これは Firestore のドキュメントID（REST レスポンスの `name` フィールドから抽出）を表します。
 - CLI は Firestore REST の各ドキュメントから `name` をパースして `id` を抽出し、生成時にパース済みマップへ `id` キーを注入します。したがって、生成された `_$ClassFromFirestore` やユーティリティは `map['id']` を参照できます。
 - 手動でマップを作成して `fromFirestore` 相当の関数に渡す場合は、必ず `id` キーを含めてください（例: `{'id': '<docId>', 'name': '...'}`）。
+
+---
+
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="sogablog" data-color="#FFDD00" data-emoji="" data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
